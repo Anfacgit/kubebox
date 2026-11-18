@@ -1,0 +1,12 @@
+*/
+!/.vscode/
+
+!/docs/
+!/docs/**/*
+
+!/lib/
+!/lib/**/*
+
+bundle.js
+
+*.js.map

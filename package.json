@@ -1,0 +1,58 @@
+{
+  "name": "kubebox",
+  "description": "Terminal and Web console for Kubernetes",
+  "author": "Antonin Stefanutti",
+  "version": "0.10.0",
+  "license": "MIT",
+  "homepage": "https://github.com/astefanutti/kubebox",
+  "main": "index.js",
+  "bin": {
+    "kubebox": "index.js"
+  },
+  "engines": {
+    "node": ">=12.3.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "browserify": "browserify -r events:events -r ./lib/config/context.js:context -r ./lib/http-then.js:http-then -r ./lib/kubebox.js:kubebox -r ./lib/task.js:task -r blessed -r chalk -r urijs -i clipboardy -u pty.js -u xterm-headless -u term.js -o docs/kubebox.js",
+    "browserify-debug": "browserify --debug -r events:events -r ./lib/config/context.js:context -r ./lib/http-then.js:http-then -r ./lib/kubebox.js:kubebox -r ./lib/task.js:task -r blessed -r chalk -r urijs -i clipboardy -u pty.js -u xterm-headless -u term.js | exorcist docs/kubebox.js.map > docs/kubebox.js",
+    "bundle": "webpack",
+    "executable-linux-x64": "npm run bundle && export CXXFLAGS=\"-O3 -ffunction-sections -fdata-sections\" && export LDFLAGS=\"-Wl,--gc-sections,--strip-all\" && cd dist/js && nexe -b -i bundle.js -c=--fully-static -c=--without-intl -c=--without-npm -c=--without-dtrace -c=--without-inspector -c=--without-etw -m=-j$(getconf _NPROCESSORS_ONLN) -t x64-12.16.2 -o ../../kubebox -r \"../usr/*\" --verbose",
+    "executable-linux-arm": "npm run bundle && export CXXFLAGS=\"-O3 -ffunction-sections -fdata-sections\" && export LDFLAGS=\"-Wl,-latomic,--gc-sections,--strip-all\" && cd dist/js && nexe -b -i bundle.js -c=--fully-static -c=--without-intl -c=--without-npm -c=--without-dtrace -c=--without-inspector -c=--without-etw --configure=--with-arm-float-abi=hard --configure=--with-arm-fpu=neon -m=-j$(getconf _NPROCESSORS_ONLN) -t arm-12.16.2 -o ../../kubebox -r \"../usr/*\" --verbose",
+    "executable-macos": "npm run bundle && cd dist/js && nexe -i bundle.js -t macos-x64-12.16.2 -o ../../kubebox -r \"../usr/*\"",
+    "executable-windows": "npm run bundle && cd dist/js && nexe -i bundle.js -t win-12.16.2 -o ../../kubebox -r \"../usr/*\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/astefanutti/kubebox.git"
+  },
+  "devDependencies": {
+    "browserify": "16.5.0",
+    "exorcist": "^0.4.0",
+    "copy-webpack-plugin": "^6.4.1",
+    "nexe": "4.0.0-beta.14",
+    "webpack": "5.4.0",
+    "webpack-cli": "4.2.0",
+    "string-replace-loader": "3.0.1",
+    "null-loader": "4.0.1",
+    "xterm": "4.18.0",
+    "xterm-addon-fit": "0.5.0",
+    "xterm-addon-webgl": "0.11.4"
+  },
+  "dependencies": {
+    "blessed": "~0.1.81",
+    "bresenham": "0.0.4",
+    "chalk": "3.0.0",
+    "cli-highlight": "2.1.9",
+    "clipboardy": "~1.2.3",
+    "gl-matrix": "2.1.0",
+    "js-yaml": "3.13.1",
+    "jsonpath-plus": "~0.20.1",
+    "lodash.debounce": "^4.0.8",
+    "moment": "~2.21.0",
+    "moment-duration-format": "~1.3.0",
+    "urijs": "~1.19.6",
+    "x256": "0.0.2",
+    "xterm-headless": "4.18.0"
+  }
+}
